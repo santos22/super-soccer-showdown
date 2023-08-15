@@ -46,23 +46,28 @@ def process_response(response: dict, position: str, players: List):
 
 
 def generate_team(client: BaseAPIClient) -> str:
-    # TODO - process star wars response...
-    if client.UNIVERSE == 'Star Wars':
-        return client.get_players_graphql()
-
+    players = []
     response = {
         'universe': client.UNIVERSE,
     }
-    players = []
 
-    tallest = client.get_tallest()
-    heaviest = client.get_heaviest()
-    shortest = client.get_shortest()
-    
-    # TODO update this...only works for Pokemon at the moment
-    process_response(tallest['data']['pokemon'], Position.GOALIE.value, players)
-    process_response(heaviest['data']['pokemon'], Position.DEFENCE.value, players)
-    process_response(shortest['data']['pokemon'], Position.OFFENCE.value, players)
+    if client.UNIVERSE == 'Star Wars':
+        tallest = client.get_tallest()
+        heaviest = client.get_heaviest()
+        shortest = client.get_shortest()
+
+        process_response(tallest, Position.GOALIE.value, players)
+        process_response(heaviest, Position.DEFENCE.value, players)
+        process_response(shortest, Position.OFFENCE.value, players)
+
+    elif client.UNIVERSE == 'Pokemon':
+        tallest = client.get_tallest()
+        heaviest = client.get_heaviest()
+        shortest = client.get_shortest()
+
+        process_response(tallest['data']['pokemon'], Position.GOALIE.value, players)
+        process_response(heaviest['data']['pokemon'], Position.DEFENCE.value, players)
+        process_response(shortest['data']['pokemon'], Position.OFFENCE.value, players)
 
     response['team'] = players  #  Team(players)
     return json.dumps(response)
