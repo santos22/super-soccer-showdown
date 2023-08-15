@@ -51,24 +51,13 @@ def generate_team(client: BaseAPIClient) -> str:
         'universe': client.UNIVERSE,
     }
 
-    # TODO make this more general...can process data further in Pokemon client class
-    if client.UNIVERSE == 'Star Wars':
-        tallest = client.get_tallest()
-        heaviest = client.get_heaviest()
-        shortest = client.get_shortest()
+    tallest = client.get_tallest()
+    heaviest = client.get_heaviest()
+    shortest = client.get_shortest()
 
-        process_response(tallest, Position.GOALIE.value, players)
-        process_response(heaviest, Position.DEFENCE.value, players)
-        process_response(shortest, Position.OFFENCE.value, players)
-
-    elif client.UNIVERSE == 'Pokemon':
-        tallest = client.get_tallest()
-        heaviest = client.get_heaviest()
-        shortest = client.get_shortest()
-
-        process_response(tallest['data']['pokemon'], Position.GOALIE.value, players)
-        process_response(heaviest['data']['pokemon'], Position.DEFENCE.value, players)
-        process_response(shortest['data']['pokemon'], Position.OFFENCE.value, players)
+    process_response(tallest, Position.GOALIE.value, players)
+    process_response(heaviest, Position.DEFENCE.value, players)
+    process_response(shortest, Position.OFFENCE.value, players)
 
     response['team'] = players  #  Team(players)
     return json.dumps(response)
