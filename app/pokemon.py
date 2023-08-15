@@ -1,10 +1,12 @@
 import requests
 
 
+from client import BaseAPIClient
+
 POKEMON_GRAPHQL_ENDPOINT = "https://beta.pokeapi.co/graphql/v1beta"
 
 
-class PokemonClient:
+class PokemonAPIClient(BaseAPIClient):
     UNIVERSE = 'Pokemon'
 
     POKEMON_HEAVIEST_QUERY = """
@@ -80,4 +82,4 @@ class PokemonClient:
         return response.json()
 
 
-pokemon_client = PokemonClient()
+pokemon_client = PokemonAPIClient()

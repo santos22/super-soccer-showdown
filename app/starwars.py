@@ -1,11 +1,22 @@
 import requests
 
+from client import BaseAPIClient
+
 
 STARWARS_GRAPHQL_ENDPOINT = "https://swapi-graphql.netlify.app/.netlify/functions/index"
 
 
-class StarWarsClient:
+class StarWarsAPIClient(BaseAPIClient):
     UNIVERSE = 'Star Wars'
+
+    def get_heaviest(self):
+        pass
+
+    def get_shortest(self):
+        pass
+    def get_tallest(self):
+        pass
+
 
     STARWARS_ALL_PEOPLE_QUERY = """
     {
@@ -35,4 +46,4 @@ class StarWarsClient:
         return response.json()
 
 
-starwars_client = StarWarsClient()
+starwars_client = StarWarsAPIClient()
