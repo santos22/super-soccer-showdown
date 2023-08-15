@@ -44,6 +44,10 @@ def process_response(response: dict, position: str, players: List):
 
 
 def generate_team(client):
+    # TODO - process star wars response...
+    if client.UNIVERSE == 'Star Wars':
+        return client.get_players_graphql()
+
     response = {
         'universe': client.UNIVERSE,
     }
