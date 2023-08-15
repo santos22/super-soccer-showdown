@@ -4,6 +4,8 @@ from typing import List
 
 import json
 
+from client import BaseAPIClient
+
 class Position(Enum):
     GOALIE = 'Goalie'
     DEFENCE = 'Defence'
@@ -43,7 +45,7 @@ def process_response(response: dict, position: str, players: List):
         players.append(value)
 
 
-def generate_team(client):
+def generate_team(client: BaseAPIClient) -> str:
     # TODO - process star wars response...
     if client.UNIVERSE == 'Star Wars':
         return client.get_players_graphql()
