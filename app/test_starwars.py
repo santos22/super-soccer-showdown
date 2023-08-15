@@ -53,8 +53,7 @@ def test_get_heaviest():
         STARWARS_GRAPHQL_ENDPOINT,
         json=MOCKED_RESPONSE,
     )
-    client = starwars_client
-    response = client.get_heaviest()
+    response = starwars_client.get_heaviest()
 
     assert len(response) == 2
 
@@ -70,8 +69,7 @@ def test_get_shortest():
         STARWARS_GRAPHQL_ENDPOINT,
         json=MOCKED_RESPONSE,
     )
-    client = starwars_client
-    response = client.get_shortest()
+    response = starwars_client.get_shortest()
 
     assert len(response) == 2
 
@@ -87,8 +85,7 @@ def test_get_tallest():
         STARWARS_GRAPHQL_ENDPOINT,
         json=MOCKED_RESPONSE,
     )
-    client = starwars_client
-    response = client.get_tallest()
+    response = starwars_client.get_tallest()
 
     assert len(response) == 1
 
