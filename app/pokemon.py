@@ -51,7 +51,7 @@ class PokemonAPIClient(BaseAPIClient):
             json=data,
             headers={'Content-Type': 'application/json'},
         )
-        return response.json()
+        return response.json()['data']['pokemon']
 
     def get_shortest(self):
         data = {
@@ -65,7 +65,7 @@ class PokemonAPIClient(BaseAPIClient):
             json=data,
             headers={'Content-Type': 'application/json'},
         )
-        return response.json()
+        return response.json()['data']['pokemon']
 
     def get_tallest(self):
         data = {
@@ -79,7 +79,7 @@ class PokemonAPIClient(BaseAPIClient):
             json=data,
             headers={'Content-Type': 'application/json'},
         )
-        return response.json()
+        return response.json()['data']['pokemon']
 
 
 pokemon_client = PokemonAPIClient()
