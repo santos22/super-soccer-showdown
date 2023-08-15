@@ -57,6 +57,7 @@ def generate_team(client):
     heaviest = client.get_heaviest()
     shortest = client.get_shortest()
     
+    # TODO update this...only works for Pokemon at the moment
     process_response(tallest['data']['pokemon'], Position.GOALIE.value, players)
     process_response(heaviest['data']['pokemon'], Position.DEFENCE.value, players)
     process_response(shortest['data']['pokemon'], Position.OFFENCE.value, players)
