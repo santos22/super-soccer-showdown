@@ -1,7 +1,7 @@
 # super-soccer-showdown
 
 ## Starting the app
-Run the following command:
+After cloning this repository, run the following command from the root directory:
 ```bash
 docker compose up -d
 ```
