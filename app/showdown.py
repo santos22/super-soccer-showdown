@@ -1,122 +1,61 @@
-# from universe.starwars import starwars_client
+from dataclasses import dataclass
+from enum import Enum
+from typing import List
 
-import pokebase as pb
-import requests
+import json
 
-BASE_URL = "https://swapi.dev/api/people/"
-POKEMON_BASE_URL = "https://pokeapi.co/api/v2/pokemon/"
+class Position(Enum):
+    GOALIE = 'Goalie'
+    DEFENCE = 'Defence'
+    OFFENCE = 'Offence'
 
-STARWARS_GRAPHQL_ENDPOINT = "https://swapi-graphql.netlify.app/.netlify/functions/index"
-POKEMON_GRAPHQL_ENDPOINT = "https://beta.pokeapi.co/graphql/v1beta"
 
-# TODO figure out module later...
-class StarWarsClient:
+"""
+Pokemon attrs
+- height is decimetres
+- weight is hectograms
 
-    STARWARS_ALL_PEOPLE_QUERY = """
-    {
-        allPeople {
-            edges {
-                node {
-                    id
-                    height
-                    mass
-                    name
-                }
-            }
-        }
+Star Wars attrs in response is correct
+"""
+@dataclass
+class Player:
+    name: str
+    height: str  # cm
+    weight: str  # kg
+    position: str
+
+
+@dataclass
+class Team:
+    players: List[Player]
+
+
+def process_response(response: dict, position: str, players: List):
+    for value in response:
+        # Player(
+        #     value["name"],
+        #     value["height"],
+        #     value["weight"],
+        #     position,
+        # )
+        # players.append(Player)
+        value['position'] = position
+        players.append(value)
+
+
+def generate_team(client):
+    response = {
+        'universe': client.UNIVERSE,
     }
-    """
+    players = []
 
-    def get_players_graphql(self):
-        data = {
-            "query": self.STARWARS_ALL_PEOPLE_QUERY,
-        }
+    tallest = client.get_tallest()
+    heaviest = client.get_heaviest()
+    shortest = client.get_shortest()
+    
+    process_response(tallest['data']['pokemon'], Position.GOALIE.value, players)
+    process_response(heaviest['data']['pokemon'], Position.DEFENCE.value, players)
+    process_response(shortest['data']['pokemon'], Position.OFFENCE.value, players)
 
-        response = requests.post(
-            STARWARS_GRAPHQL_ENDPOINT,
-            json=data,
-            headers={'Content-Type': 'application/json'},
-        )
-        return response.json()
-
-
-class PokemonClient:
-
-    POKEMON_FATTEST_QUERY = """
-        query fattest {
-            pokemon: pokemon_v2_pokemon(order_by: {weight: desc}, limit: 2, where: {is_default: {_eq: true}}) {
-                name
-                weight
-            }
-        }
-    """
-
-    POKEMON_SHORTEST_QUERY = """
-        query tallest {
-            pokemon: pokemon_v2_pokemon(order_by: {height: asc}, limit: 2, where: {is_default: {_eq: true}}) {
-                name
-                height
-            }
-        }
-    """
-
-    POKEMON_TALLEST_QUERY = """
-        query tallest {
-            pokemon: pokemon_v2_pokemon(order_by: {height: desc}, limit: 1, where: {is_default: {_eq: true}}) {
-                name
-                height
-            }
-        }
-    """
-
-    def get_fattest(self):
-        data = {
-            "operationName" : "fattest",
-            "query": self.POKEMON_FATTEST_QUERY,
-            "variables": None,
-        }
-
-        response = requests.post(
-            POKEMON_GRAPHQL_ENDPOINT,
-            json=data,
-            headers={'Content-Type': 'application/json'},
-        )
-        return response.json()
-
-    def get_shortest(self):
-        data = {
-            "operationName" : "tallest",
-            "query": self.POKEMON_SHORTEST_QUERY,
-            "variables": None,
-        }
-
-        response = requests.post(
-            POKEMON_GRAPHQL_ENDPOINT,
-            json=data,
-            headers={'Content-Type': 'application/json'},
-        )
-        return response.json()
-
-    def get_tallest(self):
-        data = {
-            "operationName" : "tallest",
-            "query": self.POKEMON_TALLEST_QUERY,
-            "variables": None,
-        }
-
-        response = requests.post(
-            POKEMON_GRAPHQL_ENDPOINT,
-            json=data,
-            headers={'Content-Type': 'application/json'},
-        )
-        return response.json()
-
-pokemon_client = PokemonClient()
-starwars_client = StarWarsClient()
-
-def generate_team(universe: str) -> dict:
-    if universe == 'starwars':
-        players = starwars_client.get_players_graphql()
-    elif universe == 'pokemon':
-        players = pokemon_client.get_shortest()
-    return players
+    response['team'] = players  #  Team(players)
+    return json.dumps(response)
