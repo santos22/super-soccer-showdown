@@ -51,6 +51,7 @@ def generate_team(client: BaseAPIClient) -> str:
         'universe': client.UNIVERSE,
     }
 
+    # TODO make this more general...can process data further in Pokemon client class
     if client.UNIVERSE == 'Star Wars':
         tallest = client.get_tallest()
         heaviest = client.get_heaviest()
