@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
 
 import json
 
 from client import BaseAPIClient
+
 
 class Position(Enum):
     GOALIE = 'Goalie'
@@ -29,10 +29,10 @@ class Player:
 
 @dataclass
 class Team:
-    players: List[Player]
+    players: list[Player]
 
 
-def process_response(response: dict, position: str, players: List):
+def process_response(response: dict, position: str, players: list):
     for value in response:
         # Player(
         #     value["name"],
