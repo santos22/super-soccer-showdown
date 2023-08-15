@@ -12,17 +12,17 @@ STARWARS_GRAPHQL_ENDPOINT = "https://swapi-graphql.netlify.app/.netlify/function
 class StarWarsAPIClient(BaseAPIClient):
     UNIVERSE = 'Star Wars'
 
-    def get_heaviest(self):
+    def get_heaviest(self) -> list:
         players = self._get_players_graphql()
         sorted_list = sorted(players, key=operator.itemgetter("mass"), reverse=True)
         return sorted_list[:2]  # two heaviest
 
-    def get_shortest(self):
+    def get_shortest(self) -> list:
         players = self._get_players_graphql()
         sorted_list = sorted(players, key=operator.itemgetter("height"), reverse=True)
         return sorted_list[-2:]  # two shortest
 
-    def get_tallest(self):
+    def get_tallest(self) -> list:
         players = self._get_players_graphql()
         sorted_list = sorted(players, key=operator.itemgetter("height"), reverse=True)
         return sorted_list[:1]  # one tallest
@@ -43,7 +43,7 @@ class StarWarsAPIClient(BaseAPIClient):
     }
     """
 
-    def _get_players_graphql(self):
+    def _get_players_graphql(self) -> list:
         # TODO cache this...
         data = {
             "query": self.STARWARS_ALL_PEOPLE_QUERY,
