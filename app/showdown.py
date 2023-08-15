@@ -5,26 +5,40 @@ import requests
 
 BASE_URL = "https://swapi.dev/api/people/"
 POKEMON_BASE_URL = "https://pokeapi.co/api/v2/pokemon/"
+
+STARWARS_GRAPHQL_ENDPOINT = "https://swapi-graphql.netlify.app/.netlify/functions/index"
 POKEMON_GRAPHQL_ENDPOINT = "https://beta.pokeapi.co/graphql/v1beta"
 
 # TODO figure out module later...
 class StarWarsClient:
 
-    def get_players(self):
-        players = []
-        response = requests.get(BASE_URL)
-        response.raise_for_status()
-        json_response = response.json()
-        players.extend(json_response.get('results'))
+    STARWARS_ALL_PEOPLE_QUERY = """
+    {
+        allPeople {
+            edges {
+                node {
+                    id
+                    height
+                    mass
+                    name
+                }
+            }
+        }
+    }
+    """
 
-        while json_response.get("next") is not None:
-            next_url = json_response['next']
-            response = requests.get(next_url)
-            response.raise_for_status()
-            json_response = response.json()
-            players.extend(json_response.get('results'))
+    def get_players_graphql(self):
+        data = {
+            "query": self.STARWARS_ALL_PEOPLE_QUERY,
+        }
 
-        return players
+        response = requests.post(
+            STARWARS_GRAPHQL_ENDPOINT,
+            json=data,
+            headers={'Content-Type': 'application/json'},
+        )
+        return response.json()
+
 
 class PokemonClient:
 
@@ -102,7 +116,7 @@ starwars_client = StarWarsClient()
 
 def generate_team(universe: str) -> dict:
     if universe == 'starwars':
-        players = starwars_client.get_players()
+        players = starwars_client.get_players_graphql()
     elif universe == 'pokemon':
         players = pokemon_client.get_shortest()
     return players
