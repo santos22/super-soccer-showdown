@@ -39,7 +39,7 @@ class PokemonAPIClient(BaseAPIClient):
         }
     """
 
-    def get_heaviest(self):
+    def get_heaviest(self) -> list:
         data = {
             "operationName" : "fattest",
             "query": self.POKEMON_HEAVIEST_QUERY,
@@ -53,7 +53,7 @@ class PokemonAPIClient(BaseAPIClient):
         )
         return response.json()['data']['pokemon']
 
-    def get_shortest(self):
+    def get_shortest(self) -> list:
         data = {
             "operationName" : "tallest",
             "query": self.POKEMON_SHORTEST_QUERY,
@@ -67,7 +67,7 @@ class PokemonAPIClient(BaseAPIClient):
         )
         return response.json()['data']['pokemon']
 
-    def get_tallest(self):
+    def get_tallest(self) -> list:
         data = {
             "operationName" : "tallest",
             "query": self.POKEMON_TALLEST_QUERY,
