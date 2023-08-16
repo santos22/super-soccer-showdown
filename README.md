@@ -20,3 +20,9 @@ docker exec -it super-soccer-showdown-web-1 python -m pytest test_starwars.py
 # to run pokemon tests
 docker exec -it super-soccer-showdown-web-1 python -m pytest test_pokemon.py
 ```
+
+## Deploying to the cloud
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/santos22/super-soccer-showdown/main/Deploying%20to%20the%20cloud.drawio.png">
+</p>
